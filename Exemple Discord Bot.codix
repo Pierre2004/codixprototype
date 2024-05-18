@@ -1,0 +1,30 @@
+const Discord = require('discord.js');
+const client = new Discord.Client();
+
+client.on('ready', () => {
+console.log('Le bot est connecté!');
+});
+
+client.on('interactionCreate', (interaction) => {
+if (interaction.type === 'APPLICATION_COMMAND') {
+switch (interaction.data.name) {
+case 'ping':
+interaction.reply('Pong!');
+break;
+case 'help':
+interaction.reply('Liste des commandes :
+/ping - Répond avec Pong!
+/help - Affiche cette liste de commandes');
+break;
+case 'ban':
+if (interaction.member.hasPermission('BAN_MEMBERS')) {
+const user = interaction.data.options[0].user;
+if (user) {
+interaction.guild.members.ban(user);
+interaction.reply('L'utilisateur a été banni avec succès!');
+} else {
+interaction.reply('Erreur : utilisateur non trouvé');
+}
+} else {
+interaction.reply('Erreur : vous n'avez pas les permissions nécessaires');
+}
